@@ -3,6 +3,7 @@ import { Schema, Types, model } from "mongoose";
 export type LogStatus = "failed" | "success";
 
 export type LogDocument = {
+  userId?: Types.ObjectId;
   projectId: Types.ObjectId;
   logs: string;
   summary: string;
@@ -14,6 +15,7 @@ export type LogDocument = {
 
 const logSchema = new Schema<LogDocument>(
   {
+    userId: { type: Schema.Types.ObjectId, ref: "User" },
     projectId: { type: Schema.Types.ObjectId, ref: "Project", required: true },
     logs: { type: String, default: "" },
     summary: { type: String, default: "" },
@@ -29,5 +31,6 @@ const logSchema = new Schema<LogDocument>(
 
 logSchema.index({ projectId: 1 });
 logSchema.index({ createdAt: -1 });
+logSchema.index({ userId: 1, createdAt: -1 });
 
 export const Log = model<LogDocument>("Log", logSchema);

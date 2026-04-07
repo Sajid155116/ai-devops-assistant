@@ -1,5 +1,4 @@
 import { Log } from "../models/Log.js";
-import { findProjectByNameService } from "./projectService.js";
 
 type PersistLogInput = {
   projectId: unknown;
@@ -88,18 +87,12 @@ export async function persistLogService(input: PersistLogInput): Promise<void> {
   await Log.create(payload);
 }
 
-export async function getLogsService(projectName?: string): Promise<LogResponse[]> {
-  let projectId: unknown;
+export async function getLogsService(requestedProjectId?: string): Promise<LogResponse[]> {
+  const filter: { projectId?: unknown } = {};
 
-  if (projectName) {
-    const project = await findProjectByNameService(projectName);
-    if (!project) {
-      return [];
-    }
-    projectId = project.id;
+  if (requestedProjectId) {
+    filter.projectId = requestedProjectId;
   }
-
-  const filter = projectId ? { projectId } : {};
 
   const logs = ((await Log.find(filter)
     .sort({ createdAt: -1 })

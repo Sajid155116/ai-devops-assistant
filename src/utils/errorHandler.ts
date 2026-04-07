@@ -1,5 +1,6 @@
 import type { NextFunction, Request, Response } from "express";
 import { LogAnalysisServiceError } from "../services/logAnalysisService.js";
+import { AuthServiceError } from "../services/authService.js";
 
 export function jsonSyntaxErrorHandler(
   err: unknown,
@@ -24,6 +25,13 @@ export function globalErrorHandler(
 ) {
   if (err instanceof LogAnalysisServiceError) {
     console.error("LLM service error:", err.message);
+    return res.status(err.statusCode).json({
+      error: err.message,
+    });
+  }
+
+  if (err instanceof AuthServiceError) {
+    console.error("Auth service error:", err.message);
     return res.status(err.statusCode).json({
       error: err.message,
     });

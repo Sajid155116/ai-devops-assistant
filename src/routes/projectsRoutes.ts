@@ -1,6 +1,8 @@
 import { Router } from "express";
-import { getProjectsController } from "../controllers/projectsController.js";
+import { createProjectController, getProjectsController } from "../controllers/projectsController.js";
+import { authMiddleware } from "../middleware/authMiddleware.js";
 
 export const projectsRoutes = Router();
 
-projectsRoutes.get("/projects", getProjectsController);
+projectsRoutes.get("/projects", authMiddleware, getProjectsController);
+projectsRoutes.post("/projects", authMiddleware, createProjectController);

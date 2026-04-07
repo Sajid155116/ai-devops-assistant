@@ -16,10 +16,14 @@
     "node": "20.x"
   },
   "dependencies": {
+    "@types/bcrypt": "^6.0.0",
+    "@types/jsonwebtoken": "^9.0.10",
+    "bcrypt": "^6.0.0",
     "cors": "^2.8.5",
     "dotenv": "^17.4.1",
     "express": "^5.2.1",
     "helmet": "^8.1.0",
+    "jsonwebtoken": "^9.0.3",
     "mongoose": "^8.23.0"
   },
   "devDependencies": {

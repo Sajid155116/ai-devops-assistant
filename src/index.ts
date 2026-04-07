@@ -6,6 +6,7 @@ import { analyzeLogsRoutes } from "./routes/analyzeLogsRoutes.js";
 import { healthRoutes } from "./routes/healthRoutes.js";
 import { projectsRoutes } from "./routes/projectsRoutes.js";
 import { logsRoutes } from "./routes/logsRoutes.js";
+import { authRoutes } from "./routes/authRoutes.js";
 import { globalErrorHandler, jsonSyntaxErrorHandler } from "./utils/errorHandler.js";
 import { requestLogger } from "./utils/requestLogger.js";
 import { connectToDatabase } from "./config/db.js";
@@ -19,6 +20,7 @@ app.use(express.json());
 app.use(jsonSyntaxErrorHandler);
 
 app.use(healthRoutes);
+app.use(authRoutes);
 app.use(analyzeLogsRoutes);
 app.use(projectsRoutes);
 app.use(logsRoutes);

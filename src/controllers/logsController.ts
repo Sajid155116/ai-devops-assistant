@@ -3,25 +3,23 @@ import { isValidObjectId } from "mongoose";
 import { getLogByIdService, getLogsService } from "../services/logService.js";
 
 type LogsQuery = {
-  projectName?: unknown;
+  projectId?: unknown;
 };
 
 export async function getLogsController(req: Request, res: Response, next: NextFunction) {
   const query = req.query as LogsQuery;
 
   if (
-    query.projectName !== undefined &&
-    (typeof query.projectName !== "string" || query.projectName.trim().length === 0)
+    query.projectId !== undefined &&
+    (typeof query.projectId !== "string" || !isValidObjectId(query.projectId))
   ) {
     return res.status(400).json({
-      error: "Invalid query. 'projectName' must be a non-empty string when provided.",
+      error: "Invalid query. 'projectId' must be a valid id when provided.",
     });
   }
 
   try {
-    const logs = await getLogsService(
-      typeof query.projectName === "string" ? query.projectName.trim() : undefined,
-    );
+    const logs = await getLogsService(typeof query.projectId === "string" ? query.projectId : undefined);
     return res.status(200).json(logs);
   } catch (error) {
     return next(error);

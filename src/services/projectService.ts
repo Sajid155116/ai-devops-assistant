@@ -18,6 +18,23 @@ export async function getProjectsService(): Promise<ProjectResponse[]> {
   }));
 }
 
+export async function createProjectService(input: {
+  name: string;
+  repo: string;
+}): Promise<ProjectResponse> {
+  const project = await Project.create({
+    name: input.name.trim(),
+    repo: input.repo.trim(),
+  });
+
+  return {
+    id: String(project._id),
+    name: project.name,
+    repo: project.repo,
+    createdAt: project.createdAt,
+  };
+}
+
 export async function findProjectByNameService(projectName: string): Promise<{ id: unknown } | null> {
   const project = (await Project.findOne({ name: projectName.trim() }).select("_id").lean()) as
     | { _id: unknown }
